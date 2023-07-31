@@ -5,13 +5,17 @@
 
 // Exemple : ["diorite", "andesite", "grass", "dirt", "pink wool", "dead shrub"], ["diorite", "andesite", "grass", "dirt", "dead shrub"] devrait retourner ["pink wool"].
 function arrayDiff(arr1, arr2) {
-    // TODO
-    const newArr = [];
-    return newArr;
+    return arr1.filter(x => !arr2.includes(x)).concat(arr2.filter(x => !arr1.includes(x)));
 }
-//test
+
+
 const ex1 = arrayDiff([1, 2, 3, 5], [1, 2, 3, 4, 5]);
 document.getElementById('exercice1').value = ex1.toString();
+
+
+
+
+
 
 // Exercice 2
 // Effectuez une recherche et un remplacement sur la phrase en utilisant les arguments fournis et renvoyez la nouvelle phrase.
@@ -25,12 +29,28 @@ document.getElementById('exercice1').value = ex1.toString();
 //
 // Exemple : replaceText("He is Sleeping on the couch", "Sleeping", "sitting") devrait retourner "He is Sitting on the couch".
 function replaceText(str, before, after) {
-    // TODO
+
+    let firstCharBefore = Array.from(before)[0];
+    let firstCharAfter;
+
+    firstCharBefore === firstCharBefore.toUpperCase() ? firstCharAfter = after.charAt(0).toUpperCase() : firstCharAfter = after.charAt(0).toLowerCase();
+
+    after = after.replace(after.charAt(0), firstCharAfter);
+    str = str.replace(before, after);
+
     return str;
 }
 
-const ex2 = replaceText('Let us go to the store', 'store', 'mall');
+const ex2 = replaceText('Let us go to the Store', 'Store', 'mall');
 document.getElementById('exercice2').value = ex2.toString();
+
+
+
+
+
+
+
+
 
 // Exercice 3
 // Écrivez une fonction qui prend au moins deux tableaux et renvoie un nouveau tableau de valeurs uniques dans l'ordre des tableaux fournis à l'origine.
@@ -39,13 +59,23 @@ document.getElementById('exercice2').value = ex2.toString();
 // Vérifiez les tests d'assertion pour des exemples.
 
 // Exemple : mergeSet([1, 2, 3], [5, 2, 1]) should return [1, 2, 3, 5].
-function mergeSet(arr) {
-    // TODO
-    return arr;
+function mergeSet(...arr) {
+    let allValues = [];
+
+    for ( oneArr of arr){
+        allValues.push(...oneArr);
+    }
+    return allValues.filter((item, index) => allValues.indexOf(item) === index);
 }
 
 const ex3 = mergeSet([1, 3, 2], [5, 2, 1, 4], [2, 1]);
 document.getElementById('exercice3').value = ex3.toString();
+
+
+
+
+
+
 
 // Exercice 4
 // Vérifiez si le prédicat (deuxième argument) est véridique sur tous les éléments d'une collection (premier argument).
@@ -55,28 +85,50 @@ document.getElementById('exercice3').value = ex3.toString();
 //
 // Exemple : isTrue([{name: "Pikachu", number: 25, caught: 3}, {name: "Togepi", number: 175, caught: 1}], "number") devrait retourner true.
 function isTrue(collection, pre) {
-    // TODO
-    return pre;
+
+    for (obj of collection){
+        if (!obj[pre]){
+            return false;
+        }
+    }
+
+    return true;
 }
 
-const ex4 = isTrue([{name: 'Quincy', role: 'Founder', isBot: false}, {
-    name: 'Naomi',
-    role: '',
-    isBot: false
-}, {name: 'Camperbot', role: 'Bot', isBot: true}], 'isBot');
+const ex4 = isTrue(
+    [
+        {name: 'Quincy', role: 'Founder', isBot: true},
+        {name: 'Naomi',role: '',isBot: true},
+        {name: 'Camperbot', role: 'Bot', isBot: true}
+    ],
+    'isBot');
 document.getElementById('exercice4').value = ex4.toString();
+
+
+
+
+
+
 
 // Exercice 5
 // Trier un tableau par ordre alphabétique
 //
 // La fonction de tri prend une collection en entrée, et doit retourner celle ordonnée par ordre alphabétique
 function order(collection) {
-    // TODO
+    collection.sort();
+    // Si on trie par ordre alphabétique Via Ferrata devrait être avant VTT.
+    // Dans l'énoncé c'est le contraire mais c'est faux, le I vient avant le T si on prend la 2ème lettre, j'ai donc laissé comme tel.
     return collection;
 }
 
 const ex5 = order(['Randonnée', 'VTT', 'Montagne', 'Via Ferrata']);
 document.getElementById('exercice5').value = ex5.toString();
+
+
+
+
+
+
 
 // Exercice 6
 // Grouper des objets par propriété commune
@@ -97,8 +149,24 @@ document.getElementById('exercice5').value = ex5.toString();
 // Le résultat doit bien être formaté comme suit => [Movie : Lord of the ring,Predestination],[Show : Sherlock,Black mirror]
 
 function groupBy(collection) {
-    // TODO
-    return collection;
+
+    let collectionGrouped = [];
+
+    for (obj of collection){
+        let CategorieAlreadyGrouped = collectionGrouped.find((item) => item.category === obj.category);
+        if (CategorieAlreadyGrouped){
+            CategorieAlreadyGrouped.items.push(obj);
+        }else {
+            collectionGrouped.push({
+                category: obj.category,
+                items: [obj],
+                toString: function(){
+                    return `[${this.category} : ${this.items}]`;
+                }
+            });
+        }
+    }
+    return collectionGrouped;
 }
 
 const ex6 = groupBy([
@@ -132,3 +200,6 @@ const ex6 = groupBy([
     },
 ]);
 document.getElementById('exercice6').value = ex6.toString();
+
+
+// A bientôt ! :)
